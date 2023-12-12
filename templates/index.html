@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Server</title>
+</head>
+
+<body>
+    <h1 id="connectedUsers">Real-Time Server</h1>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <script>
+        // Connect to the WebSocket server
+        const socket = io();
+
+        // Emit 'connect' event when the page is loaded
+        socket.emit('connected');
+
+        // Listen for 'unload' event when the page is closed
+        window.addEventListener('unload', () => {
+            socket.emit('disconnect');
+        });
+
+        // Listen for 'update_users' event to update the UI
+        socket.on('update_users', (data) => {
+            const h1Element = document.getElementById('connectedUsers');
+            h1Element.textContent = `Real-Time Server - Connected Users: ${data.count}`;
+        });
+    </script>
+</body>
+
+</html>
